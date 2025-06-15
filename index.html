@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS Alerta - A Defesa Definitiva Contra as Enchentes</title>
+
+    <!-- Google Fonts: Orbitron (títulos) e Poppins (corpo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- Biblioteca de Animação - Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Biblioteca de Animação de Rolagem - AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0a0a1a;
+            --bg-card: rgba(10, 25, 47, 0.5);
+            --border-glow: rgba(0, 191, 255, 0.3);
+            --text-primary: #e6f1ff;
+            --text-secondary: #a7c5e1;
+            --accent-blue: #00bfff;
+            --accent-green: #00ff99;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        #video-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+            opacity: 0.15;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .circle {
+            position: absolute;
+            bottom: -150px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            animation: rise 25s infinite ease-in;
+            opacity: 0;
+        }
+        .circle:nth-child(2) { left: 10%; animation-duration: 20s; width: 40px; height: 40px; background: var(--accent-green); }
+        .circle:nth-child(3) { left: 20%; animation-delay: 2s; }
+        .circle:nth-child(4) { left: 30%; animation-duration: 15s; width: 60px; height: 60px; background: var(--accent-green); }
+        .circle:nth-child(5) { left: 40%; animation-delay: 5s; }
+        .circle:nth-child(6) { left: 50%; animation-duration: 30s; background: var(--accent-green); }
+        .circle:nth-child(7) { left: 60%; animation-delay: 3s; width: 30px; height: 30px; }
+        .circle:nth-child(8) { left: 70%; animation-duration: 18s; }
+        .circle:nth-child(9) { left: 80%; animation-delay: 1s; width: 50px; height: 50px; background: var(--accent-green); }
+        .circle:nth-child(10) { left: 90%; animation-duration: 22s; }
+
+        @keyframes rise {
+            0% { transform: translateY(0); opacity: 0.2; }
+            100% { transform: translateY(-120vh); opacity: 0.7; }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            margin: 0;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 40px rgba(0, 191, 255, 0.4);
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin: 1.5rem auto 2.5rem;
+            max-width: 700px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            color: #0a0a1a;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5), 0 0 20px rgba(0, 255, 153, 0.5);
+        }
+
+        .btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 0 35px rgba(0, 191, 255, 0.8), 0 0 35px rgba(0, 255, 153, 0.8);
+        }
+
+        section {
+            padding: 6rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            color: var(--text-primary);
+        }
+
+        .split-section {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .split-section > div {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .split-section img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            opacity: 0.8;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .split-section img:hover {
+            opacity: 1;
+            transform: scale(1.03);
+        }
+        .text-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-green);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 0 30px var(--border-glow);
+        }
+        
+        .glass-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-blue);
+        }
+
+        footer {
+            background: #010409;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-glow);
+        }
+
+        @media (max-width: 768px) {
+            #video-background {
+                display: none;
+            }
+            body {
+                background: var(--bg-dark) url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&q=80&w=2071&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1') no-repeat center center fixed;
+                background-size: cover;
+            }
+            .split-section {
+                flex-direction: column;
+            }
+            .split-section.reverse-mobile {
+                flex-direction: column-reverse;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="video-background">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-brain-with-synapses-23712-large.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos HTML5.
+    </video>
+
+    <div class="background-animation">
+        <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div>
+        <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div>
+    </div>
+
+    <header>
+        <div class="hero-content container animate__animated animate__fadeInUp animate__delay-1s">
+            <h1>RS ALERTA</h1>
+            <p>O futuro da prevenção começa agora. Nós transformamos dados em defesa, antecipando os riscos climáticos para que o Rio Grande do Sul esteja sempre um passo à frente.</p>
+            <a href="https://rsalerta.netlify.app" target="_blank" class="btn">Acessar a Plataforma Agora</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="problema" class="split-section">
+            <div class="text-content" data-aos="fade-right">
+                <h3>O Cenário: Uma Luta Histórica</h3>
+                <p>O Rio Grande do Sul enfrenta uma batalha recorrente contra as águas. Na última década, mais de 25 grandes enchentes marcaram nossa história, culminando em catástrofes que afetaram centenas de cidades. Esperar pelo próximo evento não é uma estratégia. É uma rendição.</p>
+            </div>
+            <div data-aos="fade-left">
+                <img src="https://cdn.borainvestir.b3.com.br/2024/05/08104401/porto-alegre-enchentes-rio-grande-do-sul.webp" alt="Imagem aérea de uma região alagada, mostrando a escala do desastre">
+            </div>
+        </section>
+
+        <section id="solucao">
+            <div class="section-title" data-aos="fade-up">
+                <h2>A Resposta Definitiva</h2>
+                <p>O RS Alerta não é apenas um aplicativo. É um ecossistema de resiliência, projetado para quebrar o ciclo de devastação com tecnologia de ponta.</p>
+            </div>
+            <div class="features-grid">
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon"><i class="fas fa-brain"></i></div>
+                    <h3>Inteligência Artificial Preditiva</h3>
+                    <p>Antecipe o perigo. Nossos algoritmos alcançam mais de 85% de precisão, prevendo enchentes com até 72 horas de antecedência.</p>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon"><i class="fas fa-satellite-dish"></i></div>
+                    <h3>Monitoramento em Tempo Real</h3>
+                    <p>Integramos dados climáticos e hidrológicos para oferecer uma visão completa e ao vivo dos níveis de risco em todo o estado.</p>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Prevenção que Salva Vidas</h3>
+                    <p>Informação é poder. Fornecemos guias claros e orientações práticas para que a população saiba como agir antes, durante e depois.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="visao" class="split-section reverse-mobile">
+             <div data-aos="fade-right">
+                <img src="https://www.criarconsentidocomun.com/wp-content/uploads/2019/10/felices.jpg" alt="Cientista analisando dados em uma tela transparente e futurista">
+            </div>
+            <div class="text-content" data-aos="fade-left">
+                <h3>Construindo um Futuro Resiliente</h3>
+                <p>Nossa missão vai além dos alertas. Mapeamos as áreas de vulnerabilidade, capacitamos a comunidade e criamos uma cultura de prevenção. O <strong>RS Alerta</strong> é a ferramenta que transforma incerteza em preparação, protegendo vidas e garantindo o futuro do nosso estado.</p>
+                 <a href="https://rsalerta.netlify.app" target="_blank" class="btn" style="margin-top: 2rem;">Explore a Tecnologia</a>
+            </div>
+        </section>
+        
+        <section id="equipe">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Mentes por Trás da Inovação</h2>
+            </div>
+            <div style="text-align: center; max-width: 800px; margin: auto;" data-aos="fade-up">
+                <p style="font-size: 1.1rem; color: var(--text-secondary);"><strong>Alunos Desenvolvedores & Pesquisadores:</strong><br>Elias Juriatti, Guilherme Zatti, Richard Albuquerque, Laísa Linke e Fernanda Damasceno.</p>
+                <p style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 1rem;"><strong>Professores Orientadores:</strong><br>Prof. Franci, Prof. Fabiana e Prof. Eliandra.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p style="font-weight: bold; font-size: 1.1em; color: var(--text-primary);">MOSTRA CIENTÍFICA: CRIANDO CAMINHOS PARA A SUSTENTABILIDADE – RUMO A COP 30.</p>
+        <p style="margin-top: 1rem; font-weight: bold; color: var(--text-primary);">ESCOLA ESTADUAL DE ENSINO MÉDIO DR. ALDO CONTE</p>
+        <p style="margin-top: 2rem; font-size: 0.8rem;">© 2025 RS Alerta. Tecnologia para um futuro mais seguro.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 50,
+        });
+    </script>
+</body>
+</html>
