@@ -5,19 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RS Alerta - A Defesa Definitiva Contra as Enchentes</title>
 
-    <!-- Google Fonts: Orbitron (títulos) e Poppins (corpo) -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome (Ícones) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
-    <!-- Biblioteca de Animação - Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    
-    <!-- Biblioteca de Animação de Rolagem - AOS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
+        /* Variáveis CSS para temas e cores */
         :root {
             --bg-dark: #0a0a1a;
             --bg-card: rgba(10, 25, 47, 0.5);
@@ -26,8 +21,10 @@
             --text-secondary: #a7c5e1;
             --accent-blue: #00bfff;
             --accent-green: #00ff99;
+            --heading-color: #f0f8ff; /* Cor mais clara para títulos */
         }
 
+        /* Estilos Globais e de Layout */
         html {
             scroll-behavior: smooth;
         }
@@ -41,20 +38,7 @@
             overflow-x: hidden;
         }
 
-        #video-background {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -2;
-            transform: translateX(-50%) translateY(-50%);
-            object-fit: cover;
-            opacity: 0.15;
-        }
-
+        /* Animação de fundo (Bolhas) */
         .background-animation {
             position: fixed;
             top: 0;
@@ -63,6 +47,7 @@
             height: 100%;
             z-index: -1;
             overflow: hidden;
+            opacity: 0.15;
         }
         
         .circle {
@@ -90,6 +75,7 @@
             100% { transform: translateY(-120vh); opacity: 0.7; }
         }
 
+        /* Layout principal */
         .container {
             max-width: 1100px;
             margin: auto;
@@ -98,12 +84,14 @@
             z-index: 2;
         }
 
+        /* Seção de Cabeçalho (Hero) */
         header {
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
+            padding: 2rem;
         }
 
         .hero-content h1 {
@@ -115,6 +103,7 @@
             background-clip: text;
             color: transparent;
             text-shadow: 0 0 40px rgba(0, 191, 255, 0.4);
+            animation: fadeIn 2s ease-in-out;
         }
 
         .hero-content p {
@@ -122,8 +111,10 @@
             color: var(--text-secondary);
             margin: 1.5rem auto 2.5rem;
             max-width: 700px;
+            animation: fadeIn 2s ease-in-out 0.5s both;
         }
 
+        /* Botões */
         .btn {
             display: inline-block;
             background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
@@ -136,6 +127,7 @@
             font-weight: 600;
             border: none;
             box-shadow: 0 0 20px rgba(0, 191, 255, 0.5), 0 0 20px rgba(0, 255, 153, 0.5);
+            animation: fadeIn 2s ease-in-out 1s both;
         }
 
         .btn:hover {
@@ -143,6 +135,12 @@
             box-shadow: 0 0 35px rgba(0, 191, 255, 0.8), 0 0 35px rgba(0, 255, 153, 0.8);
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Seções do site */
         section {
             padding: 6rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -158,27 +156,34 @@
 
         .section-title h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
-            color: var(--text-primary);
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: var(--heading-color);
+            margin-bottom: 1rem;
         }
-
+        
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        /* Layout de seções com imagem e texto */
         .split-section {
             display: flex;
             align-items: center;
             gap: 4rem;
             flex-wrap: wrap;
         }
-
+        
         .split-section > div {
             flex: 1;
             min-width: 300px;
         }
-
+        
         .split-section img {
             width: 100%;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            opacity: 0.8;
+            opacity: 0.9;
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
         .split-section img:hover {
@@ -187,10 +192,17 @@
         }
         .text-content h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             color: var(--accent-green);
         }
         
+        .text-content p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        /* Grid de Cards */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -214,11 +226,58 @@
         }
         
         .glass-card .icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1.5rem;
             color: var(--accent-blue);
         }
+        
+        .glass-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: var(--heading-color);
+            margin-bottom: 0.5rem;
+        }
 
+        .glass-card p {
+            color: var(--text-secondary);
+        }
+        
+        /* Seção da Equipe */
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .team-member {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member h4 {
+            font-family: 'Orbitron', sans-serif;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: var(--accent-green);
+        }
+
+        .team-member p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Rodapé */
         footer {
             background: #010409;
             color: var(--text-secondary);
@@ -227,14 +286,30 @@
             margin-top: 4rem;
             border-top: 1px solid var(--border-glow);
         }
-
+        
+        footer p {
+            margin: 0.5rem 0;
+        }
+        
+        .footer-heading {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--text-primary);
+        }
+        
+        .footer-subheading {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+        
+        /* Media Queries para Responsividade */
         @media (max-width: 768px) {
-            #video-background {
-                display: none;
-            }
             body {
                 background: var(--bg-dark) url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&q=80&w=2071&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1') no-repeat center center fixed;
                 background-size: cover;
+            }
+            .background-animation {
+                display: none;
             }
             .split-section {
                 flex-direction: column;
@@ -242,23 +317,22 @@
             .split-section.reverse-mobile {
                 flex-direction: column-reverse;
             }
+            .glass-card, .team-member {
+                padding: 1.5rem;
+            }
         }
 
     </style>
 </head>
 <body>
-    <video autoplay muted loop id="video-background">
-        <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-brain-with-synapses-23712-large.mp4" type="video/mp4">
-        Seu navegador não suporta vídeos HTML5.
-    </video>
-
+    
     <div class="background-animation">
         <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div>
         <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div>
     </div>
 
     <header>
-        <div class="hero-content container animate__animated animate__fadeInUp animate__delay-1s">
+        <div class="hero-content container">
             <h1>RS ALERTA</h1>
             <p>O futuro da prevenção começa agora. Nós transformamos dados em defesa, antecipando os riscos climáticos para que o Rio Grande do Sul esteja sempre um passo à frente.</p>
             <a href="https://rsalerta.netlify.app" target="_blank" class="btn">Acessar a Plataforma Agora</a>
@@ -272,7 +346,7 @@
                 <p>O Rio Grande do Sul enfrenta uma batalha recorrente contra as águas. Na última década, mais de 25 grandes enchentes marcaram nossa história, culminando em catástrofes que afetaram centenas de cidades. Esperar pelo próximo evento não é uma estratégia. É uma rendição.</p>
             </div>
             <div data-aos="fade-left">
-                <img src="https://cdn.borainvestir.b3.com.br/2024/05/08104401/porto-alegre-enchentes-rio-grande-do-sul.webp" alt="Imagem aérea de uma região alagada, mostrando a escala do desastre">
+                <img src="https://cdn.borainvestir.b3.com.br/2024/05/08104401/porto-alegre-enchentes-rio-grande-do-sul.webp" alt="Imagem aérea de uma região alagada em Porto Alegre, mostrando a escala do desastre">
             </div>
         </section>
 
@@ -302,7 +376,7 @@
 
         <section id="visao" class="split-section reverse-mobile">
              <div data-aos="fade-right">
-                <img src="https://www.criarconsentidocomun.com/wp-content/uploads/2019/10/felices.jpg" alt="Cientista analisando dados em uma tela transparente e futurista">
+                <img src="https://images.unsplash.com/photo-1518173946274-31656722d7a9?q=80&w=2070&auto=format&fit=crop" alt="Pessoa interagindo com um mapa holográfico e dados de IA.">
             </div>
             <div class="text-content" data-aos="fade-left">
                 <h3>Construindo um Futuro Resiliente</h3>
@@ -315,16 +389,22 @@
             <div class="section-title" data-aos="fade-up">
                 <h2>Mentes por Trás da Inovação</h2>
             </div>
-            <div style="text-align: center; max-width: 800px; margin: auto;" data-aos="fade-up">
-                <p style="font-size: 1.1rem; color: var(--text-secondary);"><strong>Alunos Desenvolvedores & Pesquisadores:</strong><br>Elias Juriatti, Guilherme Zatti, Richard Albuquerque, Laísa Linke e Fernanda Damasceno.</p>
-                <p style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 1rem;"><strong>Professores Orientadores:</strong><br>Prof. Franci, Prof. Fabiana e Prof. Eliandra.</p>
+            <div class="team-grid" data-aos="fade-up">
+                <div class="team-member">
+                    <h4>Alunos Desenvolvedores & Pesquisadores</h4>
+                    <p>Elias Juriatti, Guilherme Zatti, Richard Albuquerque, Laísa Linke e Fernanda Damasceno.</p>
+                </div>
+                <div class="team-member">
+                    <h4>Professores Orientadores</h4>
+                    <p>Prof. Franci, Prof. Fabiana e Prof. Eliandra.</p>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p style="font-weight: bold; font-size: 1.1em; color: var(--text-primary);">MOSTRA CIENTÍFICA: CRIANDO CAMINHOS PARA A SUSTENTABILIDADE – RUMO A COP 30.</p>
-        <p style="margin-top: 1rem; font-weight: bold; color: var(--text-primary);">ESCOLA ESTADUAL DE ENSINO MÉDIO DR. ALDO CONTE</p>
+        <p class="footer-heading">MOSTRA CIENTÍFICA: CRIANDO CAMINHOS PARA A SUSTENTABILIDADE – RUMO A COP 30.</p>
+        <p class="footer-subheading">ESCOLA ESTADUAL DE ENSINO MÉDIO DR. ALDO CONTE</p>
         <p style="margin-top: 2rem; font-size: 0.8rem;">© 2025 RS Alerta. Tecnologia para um futuro mais seguro.</p>
     </footer>
 
