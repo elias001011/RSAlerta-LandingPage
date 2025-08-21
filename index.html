@@ -3,419 +3,949 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS Alerta - A Defesa Definitiva Contra as Enchentes</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>RSAlerta - Plataforma de Monitoramento Climático do Rio Grande do Sul</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
-        /* Variáveis CSS para temas e cores */
         :root {
-            --bg-dark: #0a0a1a;
-            --bg-card: rgba(10, 25, 47, 0.5);
-            --border-glow: rgba(0, 191, 255, 0.3);
-            --text-primary: #e6f1ff;
-            --text-secondary: #a7c5e1;
-            --accent-blue: #00bfff;
-            --accent-green: #00ff99;
-            --heading-color: #f0f8ff; /* Cor mais clara para títulos */
+            --primary-green: #10b981;
+            --secondary-green: #059669;
+            --dark-green: #064e3b;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.8);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --border-color: rgba(16, 185, 129, 0.2);
+            --glow-color: rgba(16, 185, 129, 0.3);
         }
 
-        /* Estilos Globais e de Layout */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         html {
             scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.7;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Animação de fundo (Bolhas) */
-        .background-animation {
+        /* Background Pattern */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
             z-index: -1;
-            overflow: hidden;
-            opacity: 0.15;
-        }
-        
-        .circle {
-            position: absolute;
-            bottom: -150px;
-            width: 20px;
-            height: 20px;
-            background: var(--accent-blue);
-            border-radius: 50%;
-            animation: rise 25s infinite ease-in;
-            opacity: 0;
-        }
-        .circle:nth-child(2) { left: 10%; animation-duration: 20s; width: 40px; height: 40px; background: var(--accent-green); }
-        .circle:nth-child(3) { left: 20%; animation-delay: 2s; }
-        .circle:nth-child(4) { left: 30%; animation-duration: 15s; width: 60px; height: 60px; background: var(--accent-green); }
-        .circle:nth-child(5) { left: 40%; animation-delay: 5s; }
-        .circle:nth-child(6) { left: 50%; animation-duration: 30s; background: var(--accent-green); }
-        .circle:nth-child(7) { left: 60%; animation-delay: 3s; width: 30px; height: 30px; }
-        .circle:nth-child(8) { left: 70%; animation-duration: 18s; }
-        .circle:nth-child(9) { left: 80%; animation-delay: 1s; width: 50px; height: 50px; background: var(--accent-green); }
-        .circle:nth-child(10) { left: 90%; animation-duration: 22s; }
-
-        @keyframes rise {
-            0% { transform: translateY(0); opacity: 0.2; }
-            100% { transform: translateY(-120vh); opacity: 0.7; }
+            pointer-events: none;
         }
 
-        /* Layout principal */
         .container {
-            max-width: 1100px;
-            margin: auto;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 0 2rem;
-            position: relative;
-            z-index: 2;
         }
 
-        /* Seção de Cabeçalho (Hero) */
-        header {
-            height: 100vh;
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-green);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
+            padding-top: 80px;
         }
 
-        .hero-content h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.8rem, 6vw, 5rem);
-            margin: 0;
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 40px rgba(0, 191, 255, 0.4);
-            animation: fadeIn 2s ease-in-out;
+            line-height: 1.1;
         }
 
-        .hero-content p {
+        .hero-text .subtitle {
             font-size: 1.25rem;
             color: var(--text-secondary);
-            margin: 1.5rem auto 2.5rem;
-            max-width: 700px;
-            animation: fadeIn 2s ease-in-out 0.5s both;
+            margin-bottom: 2rem;
+            max-width: 500px;
         }
 
-        /* Botões */
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(10px);
+        }
+
+        /* Buttons */
         .btn {
-            display: inline-block;
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
-            color: #0a0a1a;
-            padding: 1rem 3rem;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            text-decoration: none;
-            transition: all 0.4s ease;
-            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
             border: none;
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5), 0 0 20px rgba(0, 255, 153, 0.5);
-            animation: fadeIn 2s ease-in-out 1s both;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .btn:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 0 35px rgba(0, 191, 255, 0.8), 0 0 35px rgba(0, 255, 153, 0.8);
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: white;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
         }
 
-        /* Seções do site */
-        section {
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+        }
+
+        /* Sections */
+        .section {
             padding: 6rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        section:last-of-type {
-            border-bottom: none;
         }
 
-        .section-title {
+        .section-header {
             text-align: center;
             margin-bottom: 4rem;
         }
 
-        .section-title h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 5vw, 2.8rem);
-            color: var(--heading-color);
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
             margin-bottom: 1rem;
-        }
-        
-        .section-title p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-        
-        /* Layout de seções com imagem e texto */
-        .split-section {
-            display: flex;
-            align-items: center;
-            gap: 4rem;
-            flex-wrap: wrap;
-        }
-        
-        .split-section > div {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .split-section img {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            opacity: 0.9;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .split-section img:hover {
-            opacity: 1;
-            transform: scale(1.03);
-        }
-        .text-content h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            color: var(--accent-green);
-        }
-        
-        .text-content p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-top: 1rem;
+            color: var(--text-primary);
         }
 
-        /* Grid de Cards */
+        .section-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Features Grid */
         .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-green), var(--accent-blue));
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--glow-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+        }
+
+        /* Problem Section */
+        .problem-section {
+            background: var(--bg-secondary);
+        }
+
+        .problem-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .problem-image {
+            position: relative;
+        }
+
+        .problem-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .impact-stat {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .impact-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ef4444;
+            margin-bottom: 0.5rem;
+        }
+
+        .impact-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Solution Content with Image */
+        .solution-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        .solution-image {
+            position: relative;
+        }
+
+        .solution-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border-color);
+        }
+
+        .solution-image::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(15px);
+        }
+
+        .solution-text {
+            padding-left: 2rem;
+        }
+
+        .solution-text h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-green);
+        }
+
+        .solution-text p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .solution-highlights {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .solution-highlights li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .solution-highlights li::before {
+            content: '✓';
+            color: var(--primary-green);
+            font-weight: bold;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Team Section */
+        .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
+            margin-top: 3rem;
         }
 
-        .glass-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glow);
-            border-radius: 15px;
-            padding: 2rem;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 0 30px var(--border-glow);
-        }
-        
-        .glass-card .icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--accent-blue);
-        }
-        
-        .glass-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
-            color: var(--heading-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .glass-card p {
-            color: var(--text-secondary);
-        }
-        
-        /* Seção da Equipe */
-        .team-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        
         .team-member {
             background: var(--bg-card);
-            border: 1px solid var(--border-glow);
-            border-radius: 15px;
-            padding: 1.5rem;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
             text-align: center;
-            width: 100%;
-            max-width: 350px;
-            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
-        .team-member h4 {
-            font-family: 'Orbitron', sans-serif;
-            margin-top: 0;
+        .team-member:hover {
+            transform: translateY(-5px);
+            border-color: var(--glow-color);
+        }
+
+        .member-name {
+            font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--accent-green);
+            color: var(--text-primary);
+            font-size: 1.1rem;
         }
 
-        .team-member p {
-            margin: 0;
+        .member-role {
+            color: var(--primary-green);
             font-size: 0.95rem;
-            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 500;
         }
-        
-        /* Rodapé */
+
+        .member-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
         footer {
-            background: #010409;
-            color: var(--text-secondary);
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0;
             text-align: center;
-            padding: 3rem 2rem;
-            margin-top: 4rem;
-            border-top: 1px solid var(--border-glow);
         }
-        
-        footer p {
-            margin: 0.5rem 0;
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
         }
-        
-        .footer-heading {
-            font-weight: bold;
-            font-size: 1.1em;
-            color: var(--text-primary);
+
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
         }
-        
-        .footer-subheading {
-            font-weight: bold;
-            color: var(--text-primary);
+
+        .footer-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
         }
-        
-        /* Media Queries para Responsividade */
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-green);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+            padding-top: 2rem;
+            color: var(--text-muted);
+        }
+
+        .institution-info {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .institution-info h4 {
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .institution-info p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            body {
-                background: var(--bg-dark) url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&q=80&w=2071&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1') no-repeat center center fixed;
-                background-size: cover;
-            }
-            .background-animation {
+            .nav-links {
                 display: none;
             }
-            .split-section {
+
+            .hero-content,
+            .problem-content,
+            .solution-showcase {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .solution-text {
+                padding-left: 0;
+                order: 2;
+            }
+
+            .solution-image {
+                order: 1;
+            }
+
+            .hero-stats {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .impact-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
                 flex-direction: column;
+                gap: 1rem;
             }
-            .split-section.reverse-mobile {
-                flex-direction: column-reverse;
+
+            .container {
+                padding: 0 1rem;
             }
-            .glass-card, .team-member {
-                padding: 1.5rem;
+
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
             }
         }
 
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
-    
-    <div class="background-animation">
-        <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div>
-        <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div>
-    </div>
-
-    <header>
-        <div class="hero-content container">
-            <h1>RS ALERTA</h1>
-            <p>O futuro da prevenção começa agora. Nós transformamos dados em defesa, antecipando os riscos climáticos para que o Rio Grande do Sul esteja sempre um passo à frente.</p>
-            <a href="https://rsalerta.netlify.app" target="_blank" class="btn">Acessar a Plataforma Agora</a>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">RSAlerta</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#problema">Problema</a></li>
+                <li><a href="#solucao">Solução</a></li>
+                <li><a href="#equipe">Equipe</a></li>
+                <li><a href="https://rsalerta.netlify.app" target="_blank">Plataforma</a></li>
+            </ul>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-    </header>
+    </nav>
 
-    <main class="container">
-        <section id="problema" class="split-section">
-            <div class="text-content" data-aos="fade-right">
-                <h3>O Cenário: Uma Luta Histórica</h3>
-                <p>O Rio Grande do Sul enfrenta uma batalha recorrente contra as águas. Na última década, mais de 25 grandes enchentes marcaram nossa história, culminando em catástrofes que afetaram centenas de cidades. Esperar pelo próximo evento não é uma estratégia. É uma rendição.</p>
-            </div>
-            <div data-aos="fade-left">
-                <img src="https://cdn.borainvestir.b3.com.br/2024/05/08104401/porto-alegre-enchentes-rio-grande-do-sul.webp" alt="Imagem aérea de uma região alagada em Porto Alegre, mostrando a escala do desastre">
+    <main>
+        <!-- Hero Section -->
+        <section id="inicio" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text" data-aos="fade-right">
+                        <h1>RSAlerta</h1>
+                        <p class="subtitle">Plataforma inteligente de monitoramento climático, alertas e orientações preventivas contra desastres naturais no Rio Grande do Sul.</p>
+                        
+                        <div class="hero-stats">
+                            <div class="stat">
+                                <span class="stat-number">24/7</span>
+                                <span class="stat-label">Monitoramento</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">496</span>
+                                <span class="stat-label">Municípios</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">100%</span>
+                                <span class="stat-label">Gratuito</span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="https://rsalerta.netlify.app" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-rocket"></i>
+                                Acessar Plataforma
+                            </a>
+                            <a href="#problema" class="btn btn-secondary">
+                                <i class="fas fa-info-circle"></i>
+                                Saiba Mais
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-image" data-aos="fade-left">
+                        <img src="https://github.com/elias001011/RSAlerta/blob/main/screenshot.png?raw=true" 
+                             alt="Interface do RSAlerta mostrando dados climáticos em tempo real"
+                             class="float-animation">
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section id="solucao">
-            <div class="section-title" data-aos="fade-up">
-                <h2>A Resposta Definitiva</h2>
-                <p>O RS Alerta não é apenas um aplicativo. É um ecossistema de resiliência, projetado para quebrar o ciclo de devastação com tecnologia de ponta.</p>
-            </div>
-            <div class="features-grid">
-                <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="icon"><i class="fas fa-brain"></i></div>
-                    <h3>Inteligência Artificial Preditiva</h3>
-                    <p>Antecipe o perigo. Nossos algoritmos alcançam mais de 85% de precisão, prevendo enchentes com até 72 horas de antecedência.</p>
+        <!-- Problem Section -->
+        <section id="problema" class="section problem-section">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">O Desafio Climático do RS</h2>
+                    <p class="section-description">
+                        O Rio Grande do Sul enfrenta eventos climáticos extremos com frequência e intensidade crescentes.
+                    </p>
                 </div>
-                <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="icon"><i class="fas fa-satellite-dish"></i></div>
-                    <h3>Monitoramento em Tempo Real</h3>
-                    <p>Integramos dados climáticos e hidrológicos para oferecer uma visão completa e ao vivo dos níveis de risco em todo o estado.</p>
-                </div>
-                <div class="glass-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Prevenção que Salva Vidas</h3>
-                    <p>Informação é poder. Fornecemos guias claros e orientações práticas para que a população saiba como agir antes, durante e depois.</p>
+
+                <div class="problem-content">
+                    <div data-aos="fade-right">
+                        <h3 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">Uma História de Vulnerabilidade</h3>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.7;">
+                            O Rio Grande do Sul possui um histórico de vulnerabilidade a eventos climáticos extremos, que têm se intensificado de forma alarmante e com frequência cada vez maior. A catástrofe de abril e maio de 2024 representa um marco trágico, consolidando-se como o maior desastre climático da história do estado e um dos maiores do Brasil.
+                        </p>
+                        
+                        <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2rem; line-height: 1.6;">
+                            Durante este evento, chuvas torrenciais levaram a volumes de precipitação sem precedentes, com algumas cidades registrando em poucos dias o equivalente a mais da metade da média anual de chuvas.
+                        </p>
+                        
+                        <div class="impact-stats">
+                            <div class="impact-stat">
+                                <div class="impact-number">470+</div>
+                                <div class="impact-label">Municípios Afetados</div>
+                            </div>
+                            <div class="impact-stat">
+                                <div class="impact-number">2.3M</div>
+                                <div class="impact-label">Pessoas Impactadas</div>
+                            </div>
+                            <div class="impact-stat">
+                                <div class="impact-number">600+</div>
+                                <div class="impact-label">Vidas Perdidas</div>
+                            </div>
+                            <div class="impact-stat">
+                                <div class="impact-number">80+</div>
+                                <div class="impact-label">Desaparecidos</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-aos="fade-left">
+                        <div class="problem-image">
+                            <img src="https://cdn.borainvestir.b3.com.br/2024/05/08104401/porto-alegre-enchentes-rio-grande-do-sul.webp" 
+                                 alt="Vista aérea das enchentes de 2024 em Porto Alegre">
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="visao" class="split-section reverse-mobile">
-             <div data-aos="fade-right">
-                <img src="https://github.com/elias001011/RSAlerta/blob/main/screenshot.png" alt="Screenshot RS Alerta">
-            </div>
-            <div class="text-content" data-aos="fade-left">
-                <h3>Construindo um Futuro Resiliente</h3>
-                <p>Nossa missão vai além dos alertas. Mapeamos as áreas de vulnerabilidade, capacitamos a comunidade e criamos uma cultura de prevenção. O <strong>RS Alerta</strong> é a ferramenta que transforma incerteza em preparação, protegendo vidas e garantindo o futuro do nosso estado.</p>
-                 <a href="https://rsalerta.netlify.app" target="_blank" class="btn" style="margin-top: 2rem;">Explore a Tecnologia</a>
+        <!-- Solution Section -->
+        <section id="solucao" class="section">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Nossa Solução</h2>
+                    <p class="section-description">
+                        O RSAlerta combina tecnologia avançada, dados em tempo real e inteligência artificial 
+                        para criar um sistema completo de prevenção e resposta a desastres climáticos.
+                    </p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud-sun"></i>
+                        </div>
+                        <h3 class="feature-title">Monitoramento Climático</h3>
+                        <p class="feature-description">
+                            Acompanhe em tempo real temperatura, umidade, vento e condições meteorológicas 
+                            de qualquer cidade do Rio Grande do Sul.
+                        </p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="feature-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3 class="feature-title">Sistema de Alertas</h3>
+                        <p class="feature-description">
+                            Receba notificações instantâneas sobre riscos climáticos e orientações 
+                            de segurança para sua região.
+                        </p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="feature-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3 class="feature-title">Contatos de Emergência</h3>
+                        <p class="feature-description">
+                            Acesso rápido aos principais serviços: SAMU (192), Bombeiros (193), 
+                            Defesa Civil (199) e Polícia (190).
+                        </p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Mapa Ambiental</h3>
+                        <p class="feature-description">
+                            Visualização geográfica interativa das condições climáticas e 
+                            áreas de risco em todo o estado.
+                        </p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                        <div class="feature-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3 class="feature-title">Sustentabilidade</h3>
+                        <p class="feature-description">
+                            Dicas práticas sobre economia de água, energia limpa, reciclagem 
+                            e transporte sustentável.
+                        </p>
+                    </div>
+
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="feature-title">Indicadores Ambientais</h3>
+                        <p class="feature-description">
+                            Dados atualizados sobre cobertura florestal (17.5%), recursos hídricos (83%) 
+                            e espécies protegidas (280) no RS.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Solution Showcase -->
+                <div class="solution-showcase" data-aos="fade-up">
+                    <div class="solution-image">
+                        <img src="https://github.com/elias001011/RSAlerta/blob/main/screenshot.png?raw=true" 
+                             alt="Interface completa do RSAlerta">
+                    </div>
+                    <div class="solution-text">
+                        <h3>Tecnologia Avançada</h3>
+                        <p>
+                            Nossa plataforma integra múltiplas fontes de dados meteorológicos e ambientais, 
+                            oferecendo uma experiência completa e intuitiva para monitoramento climático.
+                        </p>
+                        
+                        <ul class="solution-highlights">
+                            <li>Interface responsiva e intuitiva</li>
+                            <li>Dados em tempo real de múltiplas fontes</li>
+                            <li>Previsões meteorológicas precisas</li>
+                            <li>Sistema de qualidade do ar integrado</li>
+                            <li>Ferramenta de IA para análises personalizadas</li>
+                        </ul>
+
+                        <a href="https://rsalerta.netlify.app" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt"></i>
+                            Explorar Plataforma
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
-        
-        <section id="equipe">
-            <div class="section-title" data-aos="fade-up">
-                <h2>Mentes por Trás da Inovação</h2>
-            </div>
-            <div class="team-grid" data-aos="fade-up">
-                <div class="team-member">
-                    <h4>Alunos Desenvolvedores & Pesquisadores</h4>
-                    <p>Elias Juriatti, Guilherme Zatti, Richard Albuquerque, Laísa Linke e Fernanda Damasceno.</p>
+
+        <!-- Team Section -->
+        <section id="equipe" class="section">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Nossa Equipe</h2>
+                    <p class="section-description">
+                        Desenvolvido por estudantes comprometidos com a proteção e sustentabilidade do Rio Grande do Sul.
+                    </p>
                 </div>
-                <div class="team-member">
-                    <h4>Professores Orientadores</h4>
-                    <p>Prof. Franci, Prof. Fabiana</p>
+
+                <div class="team-grid">
+                    <div class="team-member" data-aos="fade-up" data-aos-delay="100">
+                        <div class="member-name">Elias Juriatti Rodrigues Nunes</div>
+                        <div class="member-role">Desenvolvedor Principal</div>
+                        <div class="member-description">Responsável pelo desenvolvimento da plataforma, integração de APIs climáticas e implementação das funcionalidades do RSAlerta.</div>
+                    </div>
+
+                    <div class="team-member" data-aos="fade-up" data-aos-delay="200">
+                        <div class="member-role">Equipe de Pesquisa</div>
+                        <div class="member-name" style="margin-bottom: 1rem;">
+                            Richard Albuquerque Couto<br>
+                            Guilherme Zatti<br>
+                            Fernanda Damasceno Maragno
+                        </div>
+                        <div class="member-description">Responsáveis pela pesquisa científica, análise de dados climáticos, documentação acadêmica e fundamentação teórica do projeto.</div>
+                    </div>
+                </div>
+
+                <div class="institution-info" data-aos="fade-up">
+                    <h4>Instituição de Ensino</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>Escola Estadual de Ensino Médio Dr. Aldo Conte</strong></p>
+                    <p style="font-size: 0.95rem;">
+                        <strong>Mostra Científica:</strong> Criando Caminhos para a Sustentabilidade – Rumo a COP 30
+                    </p>
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p class="footer-heading">MOSTRA CIENTÍFICA: CRIANDO CAMINHOS PARA A SUSTENTABILIDADE – RUMO A COP 30.</p>
-        <p class="footer-subheading">ESCOLA ESTADUAL DE ENSINO MÉDIO DR. ALDO CONTE</p>
-        <p style="margin-top: 2rem; font-size: 0.8rem;">© 2025 RS Alerta. Tecnologia para um futuro mais seguro.</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">RSAlerta</div>
+                <p class="footer-description">
+                    Protegendo o Rio Grande do Sul através de tecnologia e inovação. 
+                    Uma iniciativa estudantil para um futuro mais seguro e sustentável.
+                </p>
+                
+                <div class="footer-links">
+                    <a href="https://rsalerta.netlify.app" target="_blank">Acessar Plataforma</a>
+                    <a href="#problema">Sobre o Projeto</a>
+                    <a href="#solucao">Funcionalidades</a>
+                    <a href="#equipe">Equipe</a>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2025 RSAlerta. Desenvolvido para a proteção do Rio Grande do Sul.</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+                        Projeto desenvolvido como parte da Mostra Científica da Escola Dr. Aldo Conte
+                    </p>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
-            duration: 1000,
-            easing: 'ease-out-cubic',
+            duration: 800,
+            easing: 'ease-in-out',
             once: true,
             offset: 50,
         });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(15, 23, 42, 0.98)';
+            } else {
+                nav.style.background = 'rgba(15, 23, 42, 0.95)';
+            }
+        });
+
+        // Mobile menu functionality (for future enhancement)
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
     </script>
 </body>
 </html>
