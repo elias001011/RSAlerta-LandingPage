@@ -11,18 +11,22 @@
 
     <style>
         :root {
-            --primary-green: #10b981;
-            --secondary-green: #059669;
-            --dark-green: #064e3b;
+            /* Cores oficiais da bandeira do Rio Grande do Sul */
+            --primary-green: #00AB4E; /* Verde oficial da bandeira RS */
+            --secondary-green: #008a3e; /* Verde mais escuro */
+            --light-green: #4fc370; /* Verde mais claro */
+            --rs-red: #EE302F; /* Vermelho oficial da bandeira RS */
+            --rs-yellow: #FFCB04; /* Amarelo oficial da bandeira RS */
+            --rs-blue: #1e40af; /* Azul complementar */
             --bg-primary: #0f172a;
             --bg-secondary: #1e293b;
-            --bg-card: rgba(30, 41, 59, 0.8);
+            --bg-card: rgba(0, 171, 78, 0.08);
             --text-primary: #f8fafc;
             --text-secondary: #cbd5e1;
             --text-muted: #94a3b8;
-            --accent-blue: #3b82f6;
-            --border-color: rgba(16, 185, 129, 0.2);
-            --glow-color: rgba(16, 185, 129, 0.3);
+            --accent-blue: #1e40af;
+            --border-color: rgba(0, 171, 78, 0.2);
+            --glow-color: rgba(0, 171, 78, 0.3);
         }
 
         * {
@@ -43,7 +47,7 @@
             overflow-x: hidden;
         }
 
-        /* Background Pattern */
+        /* Background Pattern com cores oficiais do RS */
         body::before {
             content: '';
             position: fixed;
@@ -52,21 +56,15 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(0, 171, 78, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(238, 48, 47, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 203, 4, 0.04) 0%, transparent 50%);
             z-index: -1;
             pointer-events: none;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Navigation */
-        nav {
+        /* Header único e limpo */
+        .main-header {
             position: fixed;
             top: 0;
             width: 100%;
@@ -76,7 +74,7 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        .nav-container {
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -87,164 +85,280 @@
 
         .logo {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary-green);
+            text-shadow: 0 0 10px var(--glow-color);
         }
 
-        .nav-links {
+        .main-nav {
             display: flex;
             list-style: none;
             gap: 2rem;
+            align-items: center;
         }
 
-        .nav-links a {
+        .main-nav a {
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .nav-links a:hover {
+        .main-nav a:hover {
             color: var(--primary-green);
+            text-shadow: 0 0 5px var(--glow-color);
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-green);
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+        .platform-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: white !important;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 171, 78, 0.3);
+        }
+
+        .platform-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 171, 78, 0.4);
+            color: white !important;
+        }
+
+        .platform-btn::after {
+            display: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                border-top: 1px solid var(--border-color);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .main-nav.active {
+                display: flex;
+            }
+
+            .main-nav a {
+                padding: 0.8rem 0;
+                font-size: 1.1rem;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .platform-btn {
+                margin-top: 1rem;
+                display: inline-block;
+                text-align: center;
+                width: 100%;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Main content */
+        main {
+            padding-top: 80px;
         }
 
         /* Hero Section */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding-top: 80px;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 171, 78, 0.08), rgba(238, 48, 47, 0.04), rgba(255, 203, 4, 0.04));
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .hero-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .hero-text h1 {
+        .hero h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: 3.5rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
+            background: linear-gradient(135deg, var(--primary-green), var(--rs-yellow), var(--rs-red));
             -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             background-clip: text;
-            color: transparent;
-            line-height: 1.1;
+            text-shadow: 0 0 30px rgba(0, 171, 78, 0.3);
         }
 
-        .hero-text .subtitle {
-            font-size: 1.25rem;
+        .hero p {
+            font-size: 1.3rem;
             color: var(--text-secondary);
             margin-bottom: 2rem;
-            max-width: 500px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
         }
 
-        .hero-stats {
+        .cta-buttons {
             display: flex;
-            gap: 2rem;
-            margin-bottom: 2.5rem;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .stat {
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 171, 78, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-green);
+            border: 2px solid var(--primary-green);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 25px rgba(0, 171, 78, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-green);
+            color: white;
+        }
+
+        /* Stats Section - Dados reais da plataforma */
+        .stats-section {
+            padding: 3rem 2rem;
+            background: rgba(0, 171, 78, 0.03);
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
             text-align: center;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 171, 78, 0.2);
+            border-color: var(--primary-green);
         }
 
         .stat-number {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: var(--primary-green);
             display: block;
         }
 
         .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .hero-image {
-            position: relative;
-        }
-
-        .hero-image img {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .hero-image::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
-            border-radius: 22px;
-            z-index: -1;
-            opacity: 0.5;
-            filter: blur(10px);
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-            color: white;
-            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--primary-green);
-            color: var(--primary-green);
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-weight: 500;
         }
 
         /* Sections */
         .section {
-            padding: 6rem 0;
+            padding: 4rem 2rem;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
         }
 
-        .section-title {
+        .section-header h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: 2.5rem;
             font-weight: 700;
+            color: var(--primary-green);
             margin-bottom: 1rem;
-            color: var(--text-primary);
         }
 
-        .section-description {
-            font-size: 1.1rem;
+        .section-header p {
+            font-size: 1.2rem;
             color: var(--text-secondary);
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
+            line-height: 1.7;
         }
 
         /* Features Grid */
@@ -252,178 +366,75 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+            margin-top: 3rem;
         }
 
         .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
             padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary-green), var(--accent-blue));
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: var(--glow-color);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 171, 78, 0.15);
+            border-color: var(--primary-green);
         }
 
         .feature-icon {
             width: 60px;
             height: 60px;
             background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-icon i {
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .feature-title {
-            font-size: 1.25rem;
-            font-weight: 600;
             margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .feature-description {
-            color: var(--text-secondary);
-        }
-
-        /* Problem Section */
-        .problem-section {
-            background: var(--bg-secondary);
-        }
-
-        .problem-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .problem-image {
-            position: relative;
-        }
-
-        .problem-image img {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .impact-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .impact-stat {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .impact-number {
+            color: white;
             font-size: 1.5rem;
-            font-weight: 700;
-            color: #ef4444;
-            margin-bottom: 0.5rem;
         }
 
-        .impact-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
         }
 
-        /* Solution Content with Image */
-        .solution-showcase {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            margin-top: 4rem;
-        }
-
-        .solution-image {
-            position: relative;
-        }
-
-        .solution-image img {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 2px solid var(--border-color);
-        }
-
-        .solution-image::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
-            border-radius: 22px;
-            z-index: -1;
-            opacity: 0.3;
-            filter: blur(15px);
-        }
-
-        .solution-text {
-            padding-left: 2rem;
-        }
-
-        .solution-text h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-green);
-        }
-
-        .solution-text p {
-            font-size: 1.1rem;
+        .feature-card p {
             color: var(--text-secondary);
-            margin-bottom: 2rem;
             line-height: 1.7;
         }
 
-        .solution-highlights {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .solution-highlights li {
-            display: flex;
+        /* Hero Content */
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
             align-items: center;
-            margin-bottom: 0.75rem;
-            color: var(--text-secondary);
+            margin-top: 2rem;
         }
 
-        .solution-highlights li::before {
-            content: '✓';
+        .hero-text h3 {
             color: var(--primary-green);
-            font-weight: bold;
-            margin-right: 1rem;
-            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 171, 78, 0.2);
         }
 
         /* Team Section */
@@ -431,160 +442,168 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            margin-top: 3rem;
+            margin-top: 2rem;
         }
 
-        .team-member {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2rem;
+        .team-card {
             text-align: center;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
 
-        .team-member:hover {
+        .team-card:hover {
             transform: translateY(-5px);
-            border-color: var(--glow-color);
+            box-shadow: 0 15px 40px rgba(0, 171, 78, 0.15);
+            border-color: var(--primary-green);
         }
 
-        .member-name {
+        .team-card h3 {
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
             color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-card .role {
+            color: var(--primary-green);
+            font-weight: 600;
+            margin-bottom: 1rem;
             font-size: 1.1rem;
         }
 
-        .member-role {
-            color: var(--primary-green);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-            font-weight: 500;
+        .team-card.developer {
+            border: 2px solid var(--primary-green);
+            background: rgba(0, 171, 78, 0.12);
         }
 
-        .member-description {
+        .team-card.developer .role {
+            color: var(--rs-yellow);
+            text-shadow: 0 0 5px rgba(255, 203, 4, 0.3);
+        }
+
+        .team-card p {
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.7;
+        }
+
+        /* Emergency Contacts */
+        .emergency-contacts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .emergency-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-contact:hover {
+            color: var(--rs-red);
+            transform: translateY(-2px);
+            border-color: var(--rs-red);
+            box-shadow: 0 5px 15px rgba(238, 48, 47, 0.2);
+        }
+
+        .emergency-contact i {
+            color: var(--rs-red);
+            font-size: 1.3rem;
+        }
+
+        .emergency-contact strong {
+            color: var(--text-primary);
         }
 
         /* Footer */
-        footer {
-            background: var(--bg-secondary);
+        .footer {
+            background: rgba(15, 23, 42, 0.8);
             border-top: 1px solid var(--border-color);
-            padding: 3rem 0;
+            padding: 3rem 2rem 2rem;
             text-align: center;
         }
 
-        .footer-content {
-            max-width: 800px;
+        .footer-container {
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .footer-logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
             color: var(--primary-green);
             margin-bottom: 1rem;
         }
 
-        .footer-description {
+        .footer-section p,
+        .footer-section a {
             color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
             text-decoration: none;
-            transition: color 0.3s ease;
+            line-height: 1.6;
         }
 
-        .footer-links a:hover {
+        .footer-section a:hover {
             color: var(--primary-green);
         }
 
         .footer-bottom {
             border-top: 1px solid var(--border-color);
-            margin-top: 2rem;
             padding-top: 2rem;
             color: var(--text-muted);
         }
 
-        .institution-info {
-            background: rgba(16, 185, 129, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        .institution-info h4 {
-            color: var(--primary-green);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .institution-info p {
-            color: var(--text-secondary);
-            margin: 0;
-        }
-
-        /* Mobile Responsiveness */
+        /* Responsivo */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
+            .hero h1 {
+                font-size: 2.5rem;
             }
 
-            .hero-content,
-            .problem-content,
-            .solution-showcase {
-                grid-template-columns: 1fr;
-                gap: 3rem;
+            .hero p {
+                font-size: 1.1rem;
             }
 
-            .solution-text {
-                padding-left: 0;
-                order: 2;
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
             }
 
-            .solution-image {
-                order: 1;
+            .btn {
+                width: 100%;
+                max-width: 300px;
             }
 
-            .hero-stats {
-                justify-content: center;
-                flex-wrap: wrap;
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
             }
 
             .features-grid {
                 grid-template-columns: 1fr;
             }
 
-            .impact-stats {
+            .hero-content {
                 grid-template-columns: 1fr;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .container {
-                padding: 0 1rem;
-            }
-
-            .nav-container {
-                padding: 1rem;
+                gap: 2rem;
             }
 
             .team-grid {
@@ -602,310 +621,348 @@
             animation: float 3s ease-in-out infinite;
         }
 
-        /* Mobile menu button */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 171, 78, 0.2);
+            z-index: 999;
         }
 
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
+        .scroll-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-green), var(--rs-yellow));
+            width: 0%;
+            transition: width 0.1s ease;
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
+    <!-- Indicador de progresso -->
+    <div class="scroll-indicator">
+        <div class="scroll-progress"></div>
+    </div>
+
+    <!-- Header único -->
+    <header class="main-header">
+        <div class="header-container">
             <div class="logo">RSAlerta</div>
-            <ul class="nav-links">
-                <li><a href="#inicio">Início</a></li>
-                <li><a href="#problema">Problema</a></li>
-                <li><a href="#solucao">Solução</a></li>
-                <li><a href="#equipe">Equipe</a></li>
-                <li><a href="https://rsalerta.netlify.app" target="_blank">Plataforma</a></li>
-            </ul>
-            <button class="mobile-menu-btn">
+            <nav class="main-nav" id="mainNav">
+                <a href="#inicio">Início</a>
+                <a href="#problema">Problema</a>
+                <a href="#solucao">Solução</a>
+                <a href="#equipe">Equipe</a>
+                <a href="https://rsalerta.netlify.app" target="_blank" class="platform-btn">Plataforma</a>
+            </nav>
+            <button class="mobile-menu-toggle" id="mobileToggle">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
-    </nav>
+    </header>
 
     <main>
         <!-- Hero Section -->
-        <section id="inicio" class="hero">
-            <div class="container">
+        <section class="hero" id="inicio">
+            <div class="hero-container" data-aos="fade-up">
+                <h1>RSAlerta</h1>
+                <p>Plataforma inteligente de monitoramento climático, alertas e orientações preventivas contra desastres naturais no Rio Grande do Sul.</p>
+                <div class="cta-buttons">
+                    <a href="https://rsalerta.netlify.app" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Acessar Plataforma
+                    </a>
+                    <a href="#solucao" class="btn btn-secondary">
+                        <i class="fas fa-info-circle"></i> Saiba Mais
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Indicadores Ambientais - Dados reais da plataforma -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                    <span class="stat-number">17.5%</span>
+                    <span class="stat-label">Cobertura Florestal</span>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                    <span class="stat-number">83%</span>
+                    <span class="stat-label">Recursos Hídricos</span>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                    <span class="stat-number">2.8%</span>
+                    <span class="stat-label">Áreas Protegidas</span>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                    <span class="stat-number">280</span>
+                    <span class="stat-label">Espécies Ameaçadas</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- O Desafio Climático do RS -->
+        <section class="section" id="problema">
+            <div class="section-container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2>O Desafio Climático do RS</h2>
+                    <p>O Rio Grande do Sul enfrenta eventos climáticos extremos com frequência e intensidade crescentes.</p>
+                </div>
+
                 <div class="hero-content">
                     <div class="hero-text" data-aos="fade-right">
-                        <h1>RSAlerta</h1>
-                        <p class="subtitle">Plataforma inteligente de monitoramento climático, alertas e orientações preventivas contra desastres naturais no Rio Grande do Sul.</p>
-                        
-                        <div class="hero-stats">
-                            <div class="stat">
-                                <span class="stat-number">24/7</span>
-                                <span class="stat-label">Monitoramento</span>
-                            </div>
-                            <div class="stat">
-                                <span class="stat-number">496</span>
-                                <span class="stat-label">Municípios</span>
-                            </div>
-                            <div class="stat">
-                                <span class="stat-number">100%</span>
-                                <span class="stat-label">Gratuito</span>
-                            </div>
-                        </div>
-
-                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <a href="https://rsalerta.netlify.app" target="_blank" class="btn btn-primary">
-                                <i class="fas fa-rocket"></i>
-                                Acessar Plataforma
-                            </a>
-                            <a href="#problema" class="btn btn-secondary">
-                                <i class="fas fa-info-circle"></i>
-                                Saiba Mais
-                            </a>
-                        </div>
+                        <h3>Uma História de Vulnerabilidade</h3>
+                        <p>O Rio Grande do Sul possui um histórico de vulnerabilidade a eventos climáticos extremos, que têm se intensificado de forma alarmante e com frequência cada vez maior. A catástrofe de abril e maio de 2024 representa um marco trágico, consolidando-se como o maior desastre climático da história do estado e um dos maiores do Brasil.</p>
+                        <p>Durante este evento, chuvas torrenciais levaram a volumes de precipitação sem precedentes, com algumas cidades registrando em poucos dias o equivalente a mais da metade da média anual de chuvas.</p>
                     </div>
                     <div class="hero-image" data-aos="fade-left">
-                        <img src="https://github.com/elias001011/RSAlerta/blob/main/screenshot.png?raw=true" 
-                             alt="Interface do RSAlerta mostrando dados climáticos em tempo real"
+                        <img src="https://cdn.borainvestir.b3.com.br/2024/05/08104401/porto-alegre-enchentes-rio-grande-do-sul.webp" 
+                             alt="Imagem de POA durante enchentes"
                              class="float-animation">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Problem Section -->
-        <section id="problema" class="section problem-section">
-            <div class="container">
+        <!-- Nossa Solução -->
+        <section class="section" id="solucao" style="background: rgba(0, 171, 78, 0.03);">
+            <div class="section-container">
                 <div class="section-header" data-aos="fade-up">
-                    <h2 class="section-title">O Desafio Climático do RS</h2>
-                    <p class="section-description">
-                        O Rio Grande do Sul enfrenta eventos climáticos extremos com frequência e intensidade crescentes.
-                    </p>
-                </div>
-
-                <div class="problem-content">
-                    <div data-aos="fade-right">
-                        <h3 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">Uma História de Vulnerabilidade</h3>
-                        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.7;">
-                            O Rio Grande do Sul possui um histórico de vulnerabilidade a eventos climáticos extremos, que têm se intensificado de forma alarmante e com frequência cada vez maior. A catástrofe de abril e maio de 2024 representa um marco trágico, consolidando-se como o maior desastre climático da história do estado e um dos maiores do Brasil.
-                        </p>
-                        
-                        <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2rem; line-height: 1.6;">
-                            Durante este evento, chuvas torrenciais levaram a volumes de precipitação sem precedentes, com algumas cidades registrando em poucos dias o equivalente a mais da metade da média anual de chuvas.
-                        </p>
-                        
-                        <div class="impact-stats">
-                            <div class="impact-stat">
-                                <div class="impact-number">470+</div>
-                                <div class="impact-label">Municípios Afetados</div>
-                            </div>
-                            <div class="impact-stat">
-                                <div class="impact-number">2.3M</div>
-                                <div class="impact-label">Pessoas Impactadas</div>
-                            </div>
-                            <div class="impact-stat">
-                                <div class="impact-number">600+</div>
-                                <div class="impact-label">Vidas Perdidas</div>
-                            </div>
-                            <div class="impact-stat">
-                                <div class="impact-number">80+</div>
-                                <div class="impact-label">Desaparecidos</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-aos="fade-left">
-                        <div class="problem-image">
-                            <img src="https://cdn.borainvestir.b3.com.br/2024/05/08104401/porto-alegre-enchentes-rio-grande-do-sul.webp" 
-                                 alt="Vista aérea das enchentes de 2024 em Porto Alegre">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Solution Section -->
-        <section id="solucao" class="section">
-            <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <h2 class="section-title">Nossa Solução</h2>
-                    <p class="section-description">
-                        O RSAlerta combina tecnologia avançada, dados em tempo real e inteligência artificial 
-                        para criar um sistema completo de prevenção e resposta a desastres climáticos.
-                    </p>
+                    <h2>Nossa Solução</h2>
+                    <p>O RSAlerta combina tecnologia avançada, dados em tempo real e inteligência artificial para criar um sistema completo de prevenção e resposta a desastres climáticos.</p>
                 </div>
 
                 <div class="features-grid">
                     <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
                         <div class="feature-icon">
-                            <i class="fas fa-cloud-sun"></i>
+                            <i class="fas fa-thermometer-half"></i>
                         </div>
-                        <h3 class="feature-title">Monitoramento Climático</h3>
-                        <p class="feature-description">
-                            Acompanhe em tempo real temperatura, umidade, vento e condições meteorológicas 
-                            de qualquer cidade do Rio Grande do Sul.
-                        </p>
+                        <h3>Monitoramento Climático</h3>
+                        <p>Acompanhe em tempo real temperatura, umidade, vento e condições meteorológicas de qualquer cidade do Rio Grande do Sul.</p>
                     </div>
 
                     <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
                         <div class="feature-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="fas fa-map"></i>
                         </div>
-                        <h3 class="feature-title">Sistema de Alertas</h3>
-                        <p class="feature-description">
-                            Receba notificações instantâneas sobre riscos climáticos e orientações 
-                            de segurança para sua região.
-                        </p>
+                        <h3>Mapa Ambiental</h3>
+                        <p>Visualização geográfica interativa das condições climáticas e áreas de risco em todo o estado.</p>
                     </div>
 
                     <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
                         <div class="feature-icon">
-                            <i class="fas fa-phone"></i>
+                            <i class="fas fa-bell"></i>
                         </div>
-                        <h3 class="feature-title">Contatos de Emergência</h3>
-                        <p class="feature-description">
-                            Acesso rápido aos principais serviços: SAMU (192), Bombeiros (193), 
-                            Defesa Civil (199) e Polícia (190).
-                        </p>
+                        <h3>Sistema de Alertas</h3>
+                        <p>Receba notificações instantâneas sobre riscos climáticos e orientações de segurança para sua região.</p>
                     </div>
 
                     <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
                         <div class="feature-icon">
-                            <i class="fas fa-map-marked-alt"></i>
+                            <i class="fas fa-wind"></i>
                         </div>
-                        <h3 class="feature-title">Mapa Ambiental</h3>
-                        <p class="feature-description">
-                            Visualização geográfica interativa das condições climáticas e 
-                            áreas de risco em todo o estado.
-                        </p>
+                        <h3>Qualidade do Ar</h3>
+                        <p>Sistema integrado de qualidade do ar com dados em tempo real para sua segurança e saúde.</p>
                     </div>
 
                     <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
                         <div class="feature-icon">
                             <i class="fas fa-leaf"></i>
                         </div>
-                        <h3 class="feature-title">Sustentabilidade</h3>
-                        <p class="feature-description">
-                            Dicas práticas sobre economia de água, energia limpa, reciclagem 
-                            e transporte sustentável.
-                        </p>
+                        <h3>Sustentabilidade</h3>
+                        <p>Dicas práticas sobre economia de água, energia limpa, reciclagem e transporte sustentável.</p>
                     </div>
 
                     <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
                         <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
+                            <i class="fas fa-robot"></i>
                         </div>
-                        <h3 class="feature-title">Indicadores Ambientais</h3>
-                        <p class="feature-description">
-                            Dados atualizados sobre cobertura florestal (17.5%), recursos hídricos (83%) 
-                            e espécies protegidas (280) no RS.
-                        </p>
+                        <h3>Inteligência Artificial</h3>
+                        <p>Ferramenta de IA para análises personalizadas e orientações sobre situações climáticas.</p>
                     </div>
                 </div>
 
-                <!-- Solution Showcase -->
-                <div class="solution-showcase" data-aos="fade-up">
-                    <div class="solution-image">
-                        <img src="https://github.com/elias001011/RSAlerta/blob/main/screenshot.png?raw=true" 
-                             alt="Interface completa do RSAlerta">
+                <!-- Funcionalidades Específicas -->
+                <div style="margin-top: 3rem;" data-aos="fade-up">
+                    <h3 style="text-align: center; margin-bottom: 2rem; color: var(--primary-green);">Tecnologia Avançada</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div style="text-align: center; padding: 1rem; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border-color);">
+                            <i class="fas fa-mobile-alt" style="font-size: 2rem; color: var(--primary-green); margin-bottom: 0.5rem;"></i>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">Interface responsiva e intuitiva</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border-color);">
+                            <i class="fas fa-database" style="font-size: 2rem; color: var(--primary-green); margin-bottom: 0.5rem;"></i>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">Dados em tempo real de múltiplas fontes</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border-color);">
+                            <i class="fas fa-cloud-sun" style="font-size: 2rem; color: var(--primary-green); margin-bottom: 0.5rem;"></i>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">Previsões meteorológicas precisas</p>
+                        </div>
                     </div>
-                    <div class="solution-text">
-                        <h3>Tecnologia Avançada</h3>
-                        <p>
-                            Nossa plataforma integra múltiplas fontes de dados meteorológicos e ambientais, 
-                            oferecendo uma experiência completa e intuitiva para monitoramento climático.
-                        </p>
-                        
-                        <ul class="solution-highlights">
-                            <li>Interface responsiva e intuitiva</li>
-                            <li>Dados em tempo real de múltiplas fontes</li>
-                            <li>Previsões meteorológicas precisas</li>
-                            <li>Sistema de qualidade do ar integrado</li>
-                            <li>Ferramenta de IA para análises personalizadas</li>
-                        </ul>
+                </div>
 
-                        <a href="https://rsalerta.netlify.app" target="_blank" class="btn btn-primary">
-                            <i class="fas fa-external-link-alt"></i>
-                            Explorar Plataforma
+                <!-- Contatos de Emergência -->
+                <div style="margin-top: 3rem;" data-aos="fade-up">
+                    <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-green);">Contatos de Emergência</h3>
+                    <div class="emergency-contacts">
+                        <a href="tel:192" class="emergency-contact">
+                            <i class="fas fa-ambulance"></i>
+                            <div>
+                                <strong>SAMU</strong><br>
+                                <span>192</span>
+                            </div>
+                        </a>
+                        <a href="tel:193" class="emergency-contact">
+                            <i class="fas fa-fire-extinguisher"></i>
+                            <div>
+                                <strong>Bombeiros</strong><br>
+                                <span>193</span>
+                            </div>
+                        </a>
+                        <a href="tel:199" class="emergency-contact">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <strong>Defesa Civil</strong><br>
+                                <span>199</span>
+                            </div>
+                        </a>
+                        <a href="tel:190" class="emergency-contact">
+                            <i class="fas fa-police-box"></i>
+                            <div>
+                                <strong>Polícia</strong><br>
+                                <span>190</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Demonstração da Plataforma -->
+                <div style="margin-top: 3rem; text-align: center;" data-aos="fade-up">
+                    <img src="https://github.com/elias001011/RSAlerta/blob/main/screenshot.png?raw=true" 
+                         alt="Interface completa do RSAlerta"
+                         style="width: 100%; max-width: 800px; border-radius: 15px; box-shadow: 0 20px 40px rgba(0, 171, 78, 0.2);">
+                    <div style="margin-top: 2rem;">
+                        <a href="https://rsalerta.netlify.app" target="_blank" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                            <i class="fas fa-external-link-alt"></i> Testar a Plataforma Agora
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Team Section -->
-        <section id="equipe" class="section">
-            <div class="container">
+        <!-- Nossa Equipe -->
+        <section class="section" id="equipe">
+            <div class="section-container">
                 <div class="section-header" data-aos="fade-up">
-                    <h2 class="section-title">Nossa Equipe</h2>
-                    <p class="section-description">
-                        Desenvolvido por estudantes comprometidos com a proteção e sustentabilidade do Rio Grande do Sul.
-                    </p>
+                    <h2>Nossa Equipe</h2>
+                    <p>Desenvolvido por estudantes comprometidos com a proteção e sustentabilidade do Rio Grande do Sul.</p>
                 </div>
 
                 <div class="team-grid">
-                    <div class="team-member" data-aos="fade-up" data-aos-delay="100">
-                        <div class="member-name">Elias Juriatti Rodrigues Nunes</div>
-                        <div class="member-role">Desenvolvedor Principal</div>
-                        <div class="member-description">Responsável pelo desenvolvimento da plataforma, integração de APIs climáticas e implementação das funcionalidades do RSAlerta.</div>
+                    <!-- Desenvolvedor Principal -->
+                    <div class="team-card developer" data-aos="fade-up" data-aos-delay="100">
+                        <h3>Elias Juriatti Rodrigues Nunes</h3>
+                        <p class="role">💻 Desenvolvedor Principal</p>
+                        <p>Responsável pelo desenvolvimento completo da plataforma, integração de APIs climáticas, implementação das funcionalidades de IA e arquitetura do sistema RSAlerta.</p>
                     </div>
 
-                    <div class="team-member" data-aos="fade-up" data-aos-delay="200">
-                        <div class="member-role">Equipe de Pesquisa</div>
-                        <div class="member-name" style="margin-bottom: 1rem;">
-                            Richard Albuquerque Couto<br>
-                            Guilherme Zatti<br>
-                            Fernanda Damasceno Maragno
-                        </div>
-                        <div class="member-description">Responsáveis pela pesquisa científica, análise de dados climáticos, documentação acadêmica e fundamentação teórica do projeto.</div>
+                    <!-- Pesquisadores -->
+                    <div class="team-card" data-aos="fade-up" data-aos-delay="200">
+                        <h3>Guilherme Zatti</h3>
+                        <p class="role">🔬 Pesquisador</p>
+                        <p>Especialista em análise de dados climáticos e pesquisa sobre mudanças climáticas no Rio Grande do Sul.</p>
+                    </div>
+
+                    <div class="team-card" data-aos="fade-up" data-aos-delay="300">
+                        <h3>Richard Albuquerque Couto</h3>
+                        <p class="role">🔬 Pesquisador</p>
+                        <p>Responsável pela pesquisa de políticas públicas e estratégias de comunicação de risco em desastres naturais.</p>
+                    </div>
+
+                    <div class="team-card" data-aos="fade-up" data-aos-delay="400">
+                        <h3>Laísa Linke da Silva</h3>
+                        <p class="role">🔬 Pesquisadora</p>
+                        <p>Especialista em sustentabilidade ambiental e desenvolvimento de estratégias de educação preventiva.</p>
+                    </div>
+
+                    <div class="team-card" data-aos="fade-up" data-aos-delay="500">
+                        <h3>Fernanda Damasceno Maragno</h3>
+                        <p class="role">🔬 Pesquisadora</p>
+                        <p>Responsável pela pesquisa sobre impactos socioambientais e desenvolvimento de indicadores ambientais.</p>
                     </div>
                 </div>
 
-                <div class="institution-info" data-aos="fade-up">
-                    <h4>Instituição de Ensino</h4>
-                    <p style="margin-bottom: 0.5rem;"><strong>Escola Estadual de Ensino Médio Dr. Aldo Conte</strong></p>
-                    <p style="font-size: 0.95rem;">
+                <!-- Professores Orientadores -->
+                <div style="margin-top: 3rem;" data-aos="fade-up" data-aos-delay="600">
+                    <h3 style="text-align: center; color: var(--primary-green); margin-bottom: 1.5rem;">Professores Orientadores</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div style="text-align: center; padding: 1.5rem; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border-color);">
+                            <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Prof. Franciele Pedrolo</h4>
+                            <p style="color: var(--text-secondary);">Orientadora Acadêmica</p>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border-color);">
+                            <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Prof. Fabiana Oliveira</h4>
+                            <p style="color: var(--text-secondary);">Orientadora Acadêmica</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instituição -->
+                <div style="text-align: center; margin-top: 2rem;" data-aos="fade-up" data-aos-delay="700">
+                    <h4 style="color: var(--primary-green); margin-bottom: 0.5rem;">Instituição de Ensino</h4>
+                    <p style="font-weight: 600; color: var(--text-primary);">Escola Estadual de Ensino Médio Dr. Aldo Conte</p>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem;">
                         <strong>Mostra Científica:</strong> Criando Caminhos para a Sustentabilidade – Rumo a COP 30
+                    </p>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">
+                        📍 Sarandi/RS
                     </p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="container">
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
             <div class="footer-content">
-                <div class="footer-logo">RSAlerta</div>
-                <p class="footer-description">
-                    Protegendo o Rio Grande do Sul através de tecnologia e inovação. 
-                    Uma iniciativa estudantil para um futuro mais seguro e sustentável.
+                <div class="footer-section">
+                    <h3>RSAlerta</h3>
+                    <p>Plataforma inteligente de monitoramento climático para o Rio Grande do Sul.</p>
+                    <p><a href="https://rsalerta.netlify.app" target="_blank">Acessar Plataforma</a></p>
+                    <p><a href="https://github.com/elias001011/RSAlerta" target="_blank">GitHub do Projeto</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Recursos</h3>
+                    <p><a href="#problema">Desafios Climáticos</a></p>
+                    <p><a href="#solucao">Nossa Solução</a></p>
+                    <p><a href="#equipe">Equipe</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Emergências</h3>
+                    <p><a href="tel:192">SAMU: 192</a></p>
+                    <p><a href="tel:193">Bombeiros: 193</a></p>
+                    <p><a href="tel:199">Defesa Civil: 199</a></p>
+                    <p><a href="tel:190">Polícia: 190</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 RSAlerta. Desenvolvido para a proteção do Rio Grande do Sul.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                    Criado por <strong>Elias Juriatti Rodrigues Nunes</strong> e equipe de pesquisadores da EEEMM Dr. Aldo Conte
                 </p>
-                
-                <div class="footer-links">
-                    <a href="https://rsalerta.netlify.app" target="_blank">Acessar Plataforma</a>
-                    <a href="#problema">Sobre o Projeto</a>
-                    <a href="#solucao">Funcionalidades</a>
-                    <a href="#equipe">Equipe</a>
-                </div>
-                
-                <div class="footer-bottom">
-                    <p>&copy; 2025 RSAlerta. Desenvolvido para a proteção do Rio Grande do Sul.</p>
-                    <p style="margin-top: 0.5rem; font-size: 0.85rem;">
-                        Projeto desenvolvido como parte da Mostra Científica da Escola Dr. Aldo Conte
-                    </p>
-                </div>
             </div>
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // Inicializar AOS
         AOS.init({
             duration: 800,
             easing: 'ease-in-out',
@@ -913,7 +970,7 @@
             offset: 50,
         });
 
-        // Smooth scrolling for navigation links
+        // Scroll suave para links âncora
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -927,25 +984,52 @@
             });
         });
 
-        // Add scroll effect to navigation
+        // Efeito de transparência no header
         window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
+            const header = document.querySelector('.main-header');
             if (window.scrollY > 100) {
-                nav.style.background = 'rgba(15, 23, 42, 0.98)';
+                header.style.background = 'rgba(15, 23, 42, 0.98)';
             } else {
-                nav.style.background = 'rgba(15, 23, 42, 0.95)';
+                header.style.background = 'rgba(15, 23, 42, 0.95)';
+            }
+
+            // Atualizar barra de progresso
+            const scrollProgress = document.querySelector('.scroll-progress');
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            scrollProgress.style.width = scrolled + '%';
+        });
+
+        // Menu mobile funcional
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mainNav = document.getElementById('mainNav');
+
+        mobileToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            
+            const icon = mobileToggle.querySelector('i');
+            if (mainNav.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
             }
         });
 
-        // Mobile menu functionality (for future enhancement)
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
-        
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
+        // Fechar menu mobile ao clicar em links
+        document.querySelectorAll('.main-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+                mobileToggle.querySelector('i').className = 'fas fa-bars';
             });
-        }
+        });
+
+        // Fechar menu mobile ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!mobileToggle.contains(e.target) && !mainNav.contains(e.target)) {
+                mainNav.classList.remove('active');
+                mobileToggle.querySelector('i').className = 'fas fa-bars';
+            }
+        });
     </script>
 </body>
 </html>
